@@ -1,0 +1,9 @@
+{
+  "title": "Livro de Teste",
+  "description": "Esse livro é de teste",
+  "author": "Rafael Holanda",
+  "edition": 1,
+  "shelf": {
+    "id": 1
+  }
+}
