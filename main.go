@@ -11,7 +11,9 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 
+	"github.com/rafaelhl/library-rel-lib/books/bookfinder"
 	"github.com/rafaelhl/library-rel-lib/books/booksinserter"
+	"github.com/rafaelhl/library-rel-lib/books/handler/bookfind"
 	"github.com/rafaelhl/library-rel-lib/books/handler/bookinsert"
 	"github.com/rafaelhl/library-rel-lib/books/repository"
 )
@@ -33,8 +35,10 @@ func main() {
 
 	// initialize rel's repo.
 	repo := rel.New(adapter)
+	repository := repository.New(repo)
 
-	router.Method(http.MethodPost, "/books", bookinsert.NewHandler(createBookInserter(repo)))
+	router.Method(http.MethodPost, "/books", bookinsert.NewHandler(booksinserter.New(repository, repository)))
+	router.Method(http.MethodGet, "/books/{bookID}", bookfind.NewHandler(bookfinder.New(repository)))
 
 	err = http.ListenAndServe(":8080", router)
 	if err != nil {
@@ -42,7 +46,3 @@ func main() {
 	}
 }
 
-func createBookInserter(repo rel.Repository) booksinserter.Inserter {
-	r := repository.New(repo)
-	return booksinserter.New(r, r)
-}

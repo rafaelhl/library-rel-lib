@@ -36,3 +36,16 @@ func (r BooksRepository) InsertBook(ctx context.Context, book books.Book) error 
 		return r.repo.Update(ctx, &book.BookShelf, rel.Inc("amount"), rel.Reload(false))
 	})
 }
+
+func (r BooksRepository) FindBookByID(ctx context.Context, bookID int) (books.Book, error)  {
+	var book books.Book
+	err := r.repo.Find(ctx, &book, rel.Eq("id", bookID))
+	if err != nil {
+		return books.Book{}, err
+	}
+	err = r.repo.Preload(ctx, &book, "book_shelf")
+	if err != nil {
+		return books.Book{}, err
+	}
+	return book, nil
+}

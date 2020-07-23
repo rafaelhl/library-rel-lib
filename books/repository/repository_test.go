@@ -84,3 +84,25 @@ func TestBooksRepository_InsertBook(t *testing.T) {
 	repo.AssertExpectations(t)
 	assert.NoError(t, err)
 }
+
+func TestBooksRepository_FindBookByID(t *testing.T) {
+	repo := reltest.New()
+	booksRepository := repository.New(repo)
+	expected := expectedBooks[0]
+
+	repo.ExpectFind(where.Eq("id", expected.ID)).Result(expected)
+	repo.ExpectPreload("book_shelf").For(&expected).Result(expectedShelf)
+
+	book, err := booksRepository.FindBookByID(context.Background(), expected.ID)
+
+	assert.NoError(t, err)
+	assert.Equal(t, books.Book{
+		ID:          expected.ID,
+		Title:       expected.Title,
+		Description: expected.Description,
+		Author:      expected.Author,
+		Edition:     expected.Edition,
+		ShelfID:     expected.ShelfID,
+		BookShelf:   expectedShelf,
+	}, book)
+}

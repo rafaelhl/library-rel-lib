@@ -11,7 +11,7 @@ type (
 		Description string    `json:"description"`
 		Author      string    `json:"author"`
 		Edition     int       `json:"edition"`
-		ShelfID     int       `db:"shelf_id"`
+		ShelfID     int       `db:"shelf_id" json:"-"`
 		CreatedAt   time.Time `json:"-"`
 		UpdatedAt   time.Time `json:"-"`
 		BookShelf   Shelf     `json:"shelf" ref:"shelf_id" fk:"id"`
