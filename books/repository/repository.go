@@ -37,7 +37,7 @@ func (r BooksRepository) InsertBook(ctx context.Context, book books.Book) error 
 	})
 }
 
-func (r BooksRepository) FindBookByID(ctx context.Context, bookID int) (books.Book, error)  {
+func (r BooksRepository) FindBookByID(ctx context.Context, bookID int) (books.Book, error) {
 	var book books.Book
 	err := r.repo.Find(ctx, &book, rel.Eq("id", bookID))
 	if err != nil {
@@ -48,4 +48,16 @@ func (r BooksRepository) FindBookByID(ctx context.Context, bookID int) (books.Bo
 		return books.Book{}, err
 	}
 	return book, nil
+}
+
+func (r BooksRepository) UpdateBook(ctx context.Context, book books.Book) error {
+	return r.repo.Update(
+		ctx,
+		&book,
+		rel.Set("title", book.Title),
+		rel.Set("description", book.Description),
+		rel.Set("author", book.Author),
+		rel.Set("edition", book.Edition),
+		rel.Reload(false),
+	)
 }

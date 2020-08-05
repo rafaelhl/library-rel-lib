@@ -106,3 +106,29 @@ func TestBooksRepository_FindBookByID(t *testing.T) {
 		BookShelf:   expectedShelf,
 	}, book)
 }
+
+func TestBooksRepository_UpdateBook(t *testing.T) {
+	repo := reltest.New()
+	booksRepository := repository.New(repo)
+	book := books.Book{
+		ID:          1,
+		Title:       "Livro de Teste",
+		Description: "Esse livro é de teste",
+		Author:      "Rafael Holanda",
+		Edition:     1,
+		BookShelf: books.Shelf{
+			ID: 1,
+		},
+	}
+
+	repo.ExpectUpdate(
+		rel.Set("title", book.Title),
+		rel.Set("description", book.Description),
+		rel.Set("author", book.Author),
+		rel.Set("edition", book.Edition),
+		rel.Reload(false),
+	).For(&book)
+
+	err := booksRepository.UpdateBook(context.Background(), book)
+	assert.NoError(t, err)
+}
