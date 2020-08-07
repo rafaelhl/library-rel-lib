@@ -95,6 +95,7 @@ func TestBooksRepository_FindBookByID(t *testing.T) {
 
 	book, err := booksRepository.FindBookByID(context.Background(), expected.ID)
 
+	repo.AssertExpectations(t)
 	assert.NoError(t, err)
 	assert.Equal(t, books.Book{
 		ID:          expected.ID,
@@ -130,5 +131,28 @@ func TestBooksRepository_UpdateBook(t *testing.T) {
 	).For(&book)
 
 	err := booksRepository.UpdateBook(context.Background(), book)
+	repo.AssertExpectations(t)
 	assert.NoError(t, err)
+}
+
+func TestBooksRepository_FindAllBooks(t *testing.T) {
+	repo := reltest.New()
+	booksRepository := repository.New(repo)
+
+	repo.ExpectFindAll().Result(expectedBooks)
+	for i := range expectedBooks {
+		id := i + 1
+		shelf := books.Shelf{
+			ID:       id,
+			Capacity: id * 5,
+			Amount:   1,
+		}
+		repo.ExpectPreload("book_shelf").For(&expectedBooks[i]).Result(shelf)
+	}
+
+	allBooks, err := booksRepository.FindAllBooks(context.Background())
+
+	repo.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedBooks, allBooks)
 }

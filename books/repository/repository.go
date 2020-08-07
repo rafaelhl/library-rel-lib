@@ -61,3 +61,18 @@ func (r BooksRepository) UpdateBook(ctx context.Context, book books.Book) error 
 		rel.Reload(false),
 	)
 }
+
+func (r BooksRepository) FindAllBooks(ctx context.Context) ([]books.Book, error) {
+	var bookList []books.Book
+	err := r.repo.FindAll(ctx, &bookList)
+	if err != nil {
+		return nil, err
+	}
+	for i := range bookList {
+		err = r.repo.Preload(ctx, &bookList[i], "book_shelf")
+		if err != nil {
+			return nil, err
+		}
+	}
+	return bookList, err
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Livro de Teste",
+    "description": "Esse livro é de teste",
+    "author": "Rafael Holanda",
+    "edition": 1,
+    "shelf": {
+      "id": 1
+    }
+  },
+  {
+    "id": 2,
+    "title": "Livro de Teste 2",
+    "description": "Esse livro é de teste 2",
+    "author": "Rafael Holanda",
+    "edition": 1,
+    "shelf": {
+      "id": 1
+    }
+  }
+]
