@@ -11,10 +11,12 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 
+	"github.com/rafaelhl/library-rel-lib/books/bookdeleter"
 	"github.com/rafaelhl/library-rel-lib/books/bookfinder"
 	"github.com/rafaelhl/library-rel-lib/books/booklistfinder"
 	"github.com/rafaelhl/library-rel-lib/books/booksinserter"
 	"github.com/rafaelhl/library-rel-lib/books/bookupdater"
+	"github.com/rafaelhl/library-rel-lib/books/handler/bookdelete"
 	"github.com/rafaelhl/library-rel-lib/books/handler/bookfind"
 	"github.com/rafaelhl/library-rel-lib/books/handler/bookinsert"
 	"github.com/rafaelhl/library-rel-lib/books/handler/booklistfind"
@@ -44,6 +46,7 @@ func main() {
 	router.Method(http.MethodPost, "/books", bookinsert.NewHandler(booksinserter.New(repository, repository)))
 	router.Method(http.MethodGet, "/books/{bookID}", bookfind.NewHandler(bookfinder.New(repository)))
 	router.Method(http.MethodPut, "/books/{bookID}", bookupdate.NewHandler(bookupdater.New(repository)))
+	router.Method(http.MethodDelete, "/books/{bookID}", bookdelete.NewHandler(bookdeleter.New(repository, repository)))
 	router.Method(http.MethodGet, "/books", booklistfind.NewHandler(booklistfinder.New(repository)))
 
 	err = http.ListenAndServe(":8080", router)

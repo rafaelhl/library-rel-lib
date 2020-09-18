@@ -1,10 +1,11 @@
 ## Sample project to validate the [REL lib](https://fs02.github.io/rel/#/) as database layer
 
-This project implements a book library with four operations:
+This project implements a book library with five operations:
 
  - POST /books (Insert a new book on the library)
  - GET /books/{bookID} (Get a book by your ID on the library)
  - PUT /books/{bookID} (Update a book on the library)
+ - DELETE /books/{bookID} (Delete a book on the library)
  - GET /books (Get all books on the library)
  
 ## How to run

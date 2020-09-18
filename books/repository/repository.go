@@ -76,3 +76,7 @@ func (r BooksRepository) FindAllBooks(ctx context.Context) ([]books.Book, error)
 	}
 	return bookList, err
 }
+
+func (r BooksRepository) DeleteBook(ctx context.Context, book books.Book) error {
+	return r.repo.Delete(ctx, &book)
+}

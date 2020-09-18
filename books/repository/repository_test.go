@@ -156,3 +156,23 @@ func TestBooksRepository_FindAllBooks(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expectedBooks, allBooks)
 }
+
+func TestBooksRepository_DeleteBook(t *testing.T) {
+	repo := reltest.New()
+	booksRepository := repository.New(repo)
+	book := books.Book{
+		ID:          1,
+		Title:       "Livro de Teste",
+		Description: "Esse livro é de teste",
+		Author:      "Rafael Holanda",
+		Edition:     1,
+		BookShelf: books.Shelf{
+			ID: 1,
+		},
+	}
+
+	repo.ExpectDelete().For(&book)
+	err := booksRepository.DeleteBook(context.Background(), book)
+
+	assert.NoError(t, err)
+}

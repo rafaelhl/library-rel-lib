@@ -14,6 +14,7 @@ type (
 		ShelfID     int       `db:"shelf_id" json:"-"`
 		CreatedAt   time.Time `json:"-"`
 		UpdatedAt   time.Time `json:"-"`
+		DeletedAt   time.Time `json:"-"`
 		BookShelf   Shelf     `json:"shelf" ref:"shelf_id" fk:"id"`
 	}
 
